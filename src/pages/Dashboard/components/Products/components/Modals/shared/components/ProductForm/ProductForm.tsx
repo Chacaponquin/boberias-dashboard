@@ -34,19 +34,21 @@ export default function ProductForm({
 
       <FormInput label="Cantidad">
         <InputNumber
-          min={1}
+          min={0}
           value={{ value: stock.value, onChange: stock.onChange }}
         />
       </FormInput>
 
       <FormInput label="Precio de costo">
         <InputNumber
+          min={0}
           value={{ value: costPrice.value, onChange: costPrice.onChange }}
         />
       </FormInput>
 
       <FormInput label="Precio de venta">
         <InputNumber
+          min={0}
           value={{ onChange: sellPrice.onChange, value: sellPrice.value }}
         />
       </FormInput>
