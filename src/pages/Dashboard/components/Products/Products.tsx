@@ -64,6 +64,7 @@ export default function Products() {
           loading={loading}
           data={products}
           columns={[
+            { cell: ({ row }) => row.code, name: "Código" },
             { cell: ({ row }) => row.name, name: "Nombre" },
             {
               name: "Precio de venta",
