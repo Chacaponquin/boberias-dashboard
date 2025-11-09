@@ -1,9 +1,8 @@
 import Button from "@/ui/components/Button/Button";
 import useModal from "../../hooks/useModal";
 import Modal from "../Modal/Modal";
-import Card from "@/ui/components/Card/Card";
-import IconButton from "@/ui/components/IconButton/IconButton";
 import { X } from "lucide-react";
+import clsx from "clsx";
 
 interface Props {
   onSubmit(): void;
@@ -28,39 +27,51 @@ export default function FormModal({
     onSubmit();
   }
 
+  const FORM_CLASS = clsx(
+    "flex flex-col",
+    "w-full max-h-full",
+    "bg-white",
+    "px-6 py-5",
+    "shadow-lg",
+    "overflow-auto",
+    "animate-duration-500",
+    "h-max",
+    "rounded-lg"
+  );
+
   return (
     <Modal className={className}>
       <form
+        style={{ maxWidth: "500px" }}
+        className={FORM_CLASS}
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
-        className="w-full items-center flex flex-col"
       >
-        <Card
-          width={500}
-          title={title}
-          extra={
-            <>
-              <IconButton onClick={handleClose} icon={<X />} />
-            </>
-          }
-          footer={
-            <>
-              <Button type="submit" loading={loading}>
-                Siguiente
-              </Button>
+        <header className="flex items-start gap-x-5 mb-6 justify-between">
+          <div className="flex items-center gap-x-3">
+            <h2 className="text-xl font-semibold">{title}</h2>
+          </div>
 
-              <Button
-                onClick={handleClose}
-                disabled={loading}
-                variant="outline"
-              >
-                Cancelar
-              </Button>
-            </>
-          }
-        >
-          {children}
-        </Card>
+          <button
+            className="stroke-gray-800"
+            onClick={handleClose}
+            type="button"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </header>
+
+        {children}
+
+        <div className="flex items-center gap-x-2.5 justify-end mt-3">
+          <Button type="submit" loading={loading}>
+            Siguiente
+          </Button>
+
+          <Button onClick={handleClose} disabled={loading} variant="outline">
+            Cancelar
+          </Button>
+        </div>
       </form>
     </Modal>
   );

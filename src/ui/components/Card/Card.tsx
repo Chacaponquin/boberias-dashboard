@@ -27,7 +27,7 @@ export default function Card({
 }: Props) {
   return (
     <LibCard
-      className="w-full"
+      className="w-full overflow-auto"
       style={{ maxWidth: width ? `${width}px` : undefined }}
     >
       <CardHeader>
