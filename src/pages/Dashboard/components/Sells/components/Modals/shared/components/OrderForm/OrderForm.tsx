@@ -11,6 +11,7 @@ import DatePicker from "@/ui/components/DatePicker/DatePicker";
 import FormInput from "@/ui/components/FormInput/FormInput";
 import IconButton from "@/ui/components/IconButton/IconButton";
 import InputNumber from "@/ui/components/InputNumber/InputNumber";
+import SearchSelect from "@/ui/components/SearchSelect/SearchSelect";
 import Select from "@/ui/components/Select/Select";
 import Table from "@/ui/components/Table/Table";
 import { Trash } from "lucide-react";
@@ -55,7 +56,23 @@ export default function OrderForm({ form }: Props) {
             {
               name: "Producto",
               cell: ({ index, row }) => (
-                <Select
+                <SearchSelect
+                  criteria={(id, search) => {
+                    const found = [
+                      row.product,
+                      ...form.products.available,
+                    ].find((o) => o.id === Number(id));
+
+                    if (found) {
+                      return found.code
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
+                        ? 1
+                        : 0;
+                    }
+
+                    return 0;
+                  }}
                   options={[row.product, ...form.products.available].map(
                     (o) => {
                       const price = PriceTextBuilder.build(o.sell_price);

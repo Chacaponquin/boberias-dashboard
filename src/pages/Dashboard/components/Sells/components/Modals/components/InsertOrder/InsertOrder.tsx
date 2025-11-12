@@ -124,7 +124,12 @@ export default function InsertOrder({ refetch }: Props) {
   }
 
   return (
-    <FormModal onSubmit={handleSubmit} loading={loading} title="Insertar venta">
+    <FormModal
+      onSubmit={handleSubmit}
+      loading={loading}
+      title="Insertar venta"
+      width={800}
+    >
       <OrderForm form={form} />
     </FormModal>
   );

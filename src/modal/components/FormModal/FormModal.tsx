@@ -19,6 +19,7 @@ export default function FormModal({
   className,
   loading = false,
   title,
+  width,
 }: Props) {
   const { handleClose } = useModal();
 
@@ -42,7 +43,7 @@ export default function FormModal({
   return (
     <Modal className={className}>
       <form
-        style={{ maxWidth: "500px" }}
+        style={{ maxWidth: width ? `${width}px` : "500px" }}
         className={FORM_CLASS}
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit}
