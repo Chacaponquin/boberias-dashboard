@@ -81,6 +81,7 @@ export default function InsertOrder({ refetch }: Props) {
         for (const p of form.orderProducts.value) {
           const { error: e } = await supabase.rpc("decrement_product_stock", {
             product_id_param: p.product.id,
+            product_count: p.count,
           });
 
           if (e) {

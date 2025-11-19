@@ -36,6 +36,7 @@ export default function DeleteOrder({ order, refetch }: Props) {
 
       const { error: e } = await supabase.rpc("increment_product_stock", {
         product_id_param: p.product.id,
+        product_count: p.count,
       });
 
       if (e) {
