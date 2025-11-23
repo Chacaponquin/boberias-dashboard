@@ -10,7 +10,7 @@ import {
   EditProductModalProps,
   InsertProductModalProps,
 } from "./domain/modal";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Product } from "@/lib/product";
 import IconButton from "@/ui/components/IconButton/IconButton";
@@ -21,6 +21,7 @@ export default function Products() {
 
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
+  const [search, setSearch] = useState("");
 
   const refetch = useCallback(() => {
     setLoading(true);
@@ -45,6 +46,14 @@ export default function Products() {
     refetch();
   }, [refetch]);
 
+  const showProducts = useMemo(() => {
+    if (search) {
+      return products.filter((p) => p.code.includes(search));
+    }
+
+    return products;
+  }, [search, products]);
+
   return (
     <>
       <Modals refetch={refetch} />
@@ -61,8 +70,9 @@ export default function Products() {
         }
       >
         <Table
+          search={{ onChange: setSearch, value: search }}
           loading={loading}
-          data={products}
+          data={showProducts}
           columns={[
             { cell: ({ row }) => row.code, name: "Código" },
             { cell: ({ row }) => row.name, name: "Nombre" },
