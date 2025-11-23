@@ -26,7 +26,9 @@ export default function Dashboard() {
 
         <Sections onChange={setSection} section={section} />
 
-        <Charts />
+        {section === DASHBOARD_SECTION.CHARTS && (
+          <Charts month={month} year={year} />
+        )}
 
         {section === DASHBOARD_SECTION.SELLS && (
           <Sells month={month} year={year} />

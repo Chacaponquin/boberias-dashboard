@@ -1,5 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Package, TrendingUp } from "lucide-react";
+import { Package, TrendingUp, LayoutDashboard } from "lucide-react";
 import { DASHBOARD_SECTION } from "../../domain/section";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export default function Sections({ onChange, section }: Props) {
   return (
     <Tabs className="mb-4" value={section}>
-      <TabsList className="grid w-full max-w-md grid-cols-2">
+      <TabsList className="grid w-full max-w-md grid-cols-3">
         <TabsTrigger
           value={DASHBOARD_SECTION.PRODUCTS}
           onClick={() => onChange(DASHBOARD_SECTION.PRODUCTS)}
@@ -27,6 +27,15 @@ export default function Sections({ onChange, section }: Props) {
         >
           <TrendingUp className="h-4 w-4" />
           Ventas
+        </TabsTrigger>
+
+        <TabsTrigger
+          value={DASHBOARD_SECTION.CHARTS}
+          onClick={() => onChange(DASHBOARD_SECTION.CHARTS)}
+          className="gap-2"
+        >
+          <LayoutDashboard className="h-4 w-4" />
+          Analíticas
         </TabsTrigger>
       </TabsList>
     </Tabs>

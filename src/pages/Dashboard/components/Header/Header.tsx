@@ -9,9 +9,11 @@ interface Props {
 
 export default function Header({ month, year }: Props) {
   return (
-    <header className="flex flex-col md:flex-row md:items-center items-end justify-between gap-x-5 gap-y-5 w-full mt-10 mb-10">
+    <header className="flex flex-col-reverse md:flex-row md:items-center items-end justify-between gap-x-5 gap-y-5 w-full mt-10 mb-10">
       <div className="w-full">
-        <h1 className="font-bold text-4xl mb-1">Bienvenido de vuelta</h1>
+        <h1 className="font-bold text-3xl sm:text-4xl mb-1">
+          Bienvenido de vuelta
+        </h1>
         <p className="text-base text-gray-500">
           Gestión de inventario y ventas en tiempo real
         </p>
