@@ -1,12 +1,12 @@
 import type { Order } from "@/lib/order";
-import { PriceTextBuilder } from "@/lib/price-text-builder";
 import type { Product } from "@/lib/product";
 import { supabase } from "@/lib/supabase";
 import Card from "@/ui/components/Card/Card";
 import BarChart from "@/ui/components/Charts/components/BarChart/BarChart";
-import LinealChart from "@/ui/components/Charts/components/LinealChart/LinealChart";
 import Decimal from "decimal.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import CashChart from "./components/CashChart/CashChart";
+import BalanceChart from "./components/BalanceChart/BalanceChart";
 
 interface Props {
   month: number;
@@ -16,11 +16,6 @@ interface Props {
 interface TopProduct {
   product: Product;
   count: number;
-}
-
-interface MonthSell {
-  day: number;
-  amount: number;
 }
 
 export default function Charts({ month, year }: Props) {
@@ -54,42 +49,6 @@ export default function Charts({ month, year }: Props) {
 
     return products.sort((a, b) => b.count - a.count).slice(0, 5);
   }, [orders]);
-
-  const monthSells = useMemo(() => {
-    const result = [] as MonthSell[];
-
-    const getDayNumbers = () => {
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      return Array.from({ length: daysInMonth }, (_, i) => i + 1);
-    };
-
-    const days = getDayNumbers();
-
-    for (const day of days) {
-      let sum = 0;
-
-      const filtered = orders.filter((o) => {
-        return (
-          new Date(o.sell_date).getMonth() === month &&
-          new Date(o.sell_date).getFullYear() === year &&
-          new Date(o.sell_date).getDate() === day
-        );
-      });
-
-      for (const o of filtered) {
-        const amount = o.order_product.reduce(
-          (a, b) => new Decimal(b.price).mul(b.count).plus(a).toNumber(),
-          0
-        );
-
-        sum = new Decimal(amount).plus(sum).toNumber();
-      }
-
-      result.push({ day: day, amount: sum });
-    }
-
-    return result;
-  }, [orders, month, year]);
 
   const refetch = useCallback(() => {
     setLoading(true);
@@ -144,24 +103,12 @@ export default function Charts({ month, year }: Props) {
 
   return (
     <>
-      <Card title="Ingresos en el mes">
-        <LinealChart
-          data={[
-            {
-              label: "Ingresos",
-              color: "oklch(0.145 0 0)",
-              data: monthSells.map((o) => {
-                return { unit: o.day.toString(), value: o.amount };
-              }),
-            },
-          ]}
-          height={500}
-          y={{ formatter: (v) => PriceTextBuilder.build(v) }}
-        />
-      </Card>
+      <CashChart month={month} orders={orders} year={year} />
+
+      <BalanceChart month={month} orders={orders} year={year} />
 
       {topProducts.length > 0 && (
-        <Card title="Productos más vendidos">
+        <Card title="Productos más vendidos" className="mb-5">
           <BarChart
             height={500}
             data={topProducts}

@@ -17,11 +17,27 @@ import { PriceTextBuilder } from "@/lib/price-text-builder";
 import IconButton from "@/ui/components/IconButton/IconButton";
 import { Edit, Trash } from "lucide-react";
 import { PAYMENT_METHOD, PaymentMethodTextBuilder } from "@/lib/payment-method";
+import Decimal from "decimal.js";
 
 interface Props {
   month: number;
   year: number;
 }
+
+const accumulateAmount = (orders: Order[], ref: Order) => {
+  return orders
+    .filter(
+      (o) => new Date(ref.sell_date) >= new Date(o.sell_date) && o.id !== ref.id
+    )
+    .reduce((a, b) => {
+      const sum = b.order_payment_method.reduce(
+        (c, d) => new Decimal(c).plus(d.amount).toNumber(),
+        0
+      );
+
+      return new Decimal(a).plus(sum).toNumber();
+    }, 0);
+};
 
 export default function Sells({ month, year }: Props) {
   const { handleOpenModal } = useModal();
@@ -144,6 +160,11 @@ export default function Sells({ month, year }: Props) {
                   })
                   .join(", ");
               },
+            },
+            {
+              name: "Acumulado",
+              cell: ({ row }) =>
+                PriceTextBuilder.build(accumulateAmount(orders, row)),
             },
             {
               name: "",

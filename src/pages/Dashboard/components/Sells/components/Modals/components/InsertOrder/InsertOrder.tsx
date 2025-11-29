@@ -5,6 +5,7 @@ import useOrderForm from "../../shared/hooks/useOrderForm";
 import { supabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 import useModal from "@/modal/hooks/useModal";
+import { ORDER_TYPE } from "@/lib/order-type";
 
 interface Props {
   refetch: () => void;
@@ -20,14 +21,16 @@ export default function InsertOrder({ refetch }: Props) {
   async function handleSubmit() {
     setLoading(true);
 
-    if (form.sumPayments !== form.sumProducts) {
-      toast.error(
-        "La cantidad de dinero recolectado en los productos debe ser igual al pagado"
-      );
+    if (form.type.value === ORDER_TYPE.SELL) {
+      if (form.sumPayments !== form.sumProducts) {
+        toast.error(
+          "La cantidad de dinero recolectado en los productos debe ser igual al pagado"
+        );
 
-      setLoading(false);
+        setLoading(false);
 
-      return;
+        return;
+      }
     }
 
     const defaultError = () => {

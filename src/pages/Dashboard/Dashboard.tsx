@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   return (
     <div className="bg-gray-50 w-full min-h-dvh flex flex-col items-center px-5 py-5">
-      <main className="w-full max-w-[1200px] flex flex-col">
+      <main className="w-full max-w-[1300px] flex flex-col">
         <Header
           month={{ onChange: setMonth, value: month }}
           year={{ onChange: setYear, value: year }}

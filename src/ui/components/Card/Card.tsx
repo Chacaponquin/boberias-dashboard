@@ -7,6 +7,7 @@ import {
   CardTitle,
   Card as LibCard,
 } from "@/components/ui/card";
+import clsx from "clsx";
 
 interface Props {
   title: string;
@@ -15,6 +16,7 @@ interface Props {
   extra?: React.ReactNode;
   footer?: React.ReactNode;
   width?: number;
+  className?: string;
 }
 
 export default function Card({
@@ -24,10 +26,11 @@ export default function Card({
   extra,
   footer,
   width,
+  className,
 }: Props) {
   return (
     <LibCard
-      className="w-full overflow-auto"
+      className={clsx("w-full overflow-auto", className)}
       style={{ maxWidth: width ? `${width}px` : undefined }}
     >
       <CardHeader>

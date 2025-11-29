@@ -1,4 +1,5 @@
 import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Textarea } from "@/components/ui/textarea";
 import type { OrderForm } from "@/lib/order";
 import { ORDER_TYPE, orderTypes, OrderTypeTextBuiler } from "@/lib/order-type";
 import {
@@ -40,6 +41,15 @@ export default function OrderForm({ form }: Props) {
             value: form.type.value,
             onChange: (v) => form.type.onChange(v as ORDER_TYPE),
           }}
+        />
+      </FormInput>
+
+      <FormInput label="Descripción">
+        <Textarea
+          placeholder="Notas..."
+          className="h-[110px]"
+          value={form.description.value}
+          onChange={(e) => form.description.onChange(e.target.value)}
         />
       </FormInput>
 
