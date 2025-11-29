@@ -1,5 +1,6 @@
 import type { Order } from "@/lib/order";
 import type { Week } from "./chart";
+import { ORDER_TYPE } from "@/lib/order-type";
 
 export const getDayNumbers = (year: number, month: number) => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -7,11 +8,13 @@ export const getDayNumbers = (year: number, month: number) => {
 };
 
 export const filterOrdersByWeek = (orders: Order[], week: Week) => {
-  return orders.filter(
-    (o) =>
-      new Date(o.sell_date) <= week.endDate &&
-      new Date(o.sell_date) >= week.startDate
-  );
+  return orders
+    .filter((o) => o.type === ORDER_TYPE.SELL)
+    .filter(
+      (o) =>
+        new Date(o.sell_date) <= week.endDate &&
+        new Date(o.sell_date) >= week.startDate
+    );
 };
 
 export const filterOrdersByDate = (
@@ -20,13 +23,15 @@ export const filterOrdersByDate = (
   month: number,
   day: number
 ) => {
-  return orders.filter((o) => {
-    return (
-      new Date(o.sell_date).getMonth() === month &&
-      new Date(o.sell_date).getFullYear() === year &&
-      new Date(o.sell_date).getDate() === day
-    );
-  });
+  return orders
+    .filter((o) => o.type === ORDER_TYPE.SELL)
+    .filter((o) => {
+      return (
+        new Date(o.sell_date).getMonth() === month &&
+        new Date(o.sell_date).getFullYear() === year &&
+        new Date(o.sell_date).getDate() === day
+      );
+    });
 };
 
 export function getWeeksFromMonth(

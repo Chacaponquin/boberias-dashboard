@@ -7,6 +7,7 @@ import Decimal from "decimal.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import CashChart from "./components/CashChart/CashChart";
 import BalanceChart from "./components/BalanceChart/BalanceChart";
+import { ORDER_TYPE } from "@/lib/order-type";
 
 interface Props {
   month: number;
@@ -30,17 +31,19 @@ export default function Charts({ month, year }: Props) {
         const found = products.find((o) => o.product.id === p.product.id);
 
         if (!found) {
-          const count = orders.reduce((a, b) => {
-            const inorder = b.order_product.reduce((c, d) => {
-              if (d.product.id === p.product.id) {
-                return c + d.count;
-              }
+          const count = orders
+            .filter((o) => o.type === ORDER_TYPE.SELL)
+            .reduce((a, b) => {
+              const inorder = b.order_product.reduce((c, d) => {
+                if (d.product.id === p.product.id) {
+                  return c + d.count;
+                }
 
-              return c;
+                return c;
+              }, 0);
+
+              return new Decimal(a).plus(inorder).toNumber();
             }, 0);
-
-            return new Decimal(a).plus(inorder).toNumber();
-          }, 0);
 
           products.push({ product: p.product, count: count });
         }

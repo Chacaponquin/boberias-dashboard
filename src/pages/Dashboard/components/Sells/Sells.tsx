@@ -12,7 +12,7 @@ import { supabase } from "@/lib/supabase";
 import Table from "@/ui/components/Table/Table";
 import { type Order } from "@/lib/order";
 import { DateTextBuilder } from "@/lib/date-text-builder";
-import { OrderTypeTextBuiler } from "@/lib/order-type";
+import { ORDER_TYPE, OrderTypeTextBuiler } from "@/lib/order-type";
 import { PriceTextBuilder } from "@/lib/price-text-builder";
 import IconButton from "@/ui/components/IconButton/IconButton";
 import { Edit, Trash } from "lucide-react";
@@ -26,6 +26,7 @@ interface Props {
 
 const accumulateAmount = (orders: Order[], ref: Order) => {
   return orders
+    .filter((o) => o.type === ORDER_TYPE.SELL)
     .filter(
       (o) => new Date(ref.sell_date) >= new Date(o.sell_date) && o.id !== ref.id
     )

@@ -123,7 +123,7 @@ export default function CashChart({ month, orders, year }: Props) {
   return (
     <Card
       className="mb-5"
-      title="Ingresos de efectivo en el mes"
+      title="Métodos de pago en el mes"
       extra={<MonthSections onChange={setSection} section={section} />}
     >
       {section === MONTH_DATA_SECTION.DAY && (
